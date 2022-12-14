@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summary</title>
+    <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    crossorigin="anonymous"
+  />
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load("current", {packages:["corechart"]});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+      {% for key, value in data.items() %}
+          {% if value is string %}
+              ['{{ key }}', '{{ value }}'],
+          {% else %}
+              ['{{ key }}', {{ value }}],
+          {% endif %}
+          
+      {% endfor %}
+  ]);
+
+      var options = {
+        title: 'My Daily Activities',
+        is3D: true,
+      };
+
+      var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+      chart.draw(data, options);
+    }
+  </script>
+</head>
+<body>
+  
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <button class=" navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+    <div class="collapse navbar-collapse " id="navbar">
+      <div class="navbar-nav">
+        {%if user.is_authenticated%}
+                <a class="nav-item nav-link" id="home" href="/">Home</a>    
+                <a class="nav-item nav-link" id="home" href="/add">Add Details</a>
+                <a class="nav-item nav-link" id="login" href="/about">About</a>
+                <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+            {%endif%}
+        
+      </div>
+    </div>
+    </nav>
+    
+    <h3 style="text-align:center">Summary of {{user.username}}</h3>
+    <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
+    <div style="margin: 20px;">
+      <h6>Number Of Task Completed:&nbsp;{{ comp }}</h6>
+      <h6>Number Of Task In Review:&nbsp;{{rev}}</h6>
+      <h6>Number Of Task In Progress:&nbsp;{{inp}}</h6>
+      <h6>Number Of Task In Request:&nbsp;{{req}}</h6>
+      <h6>Number Of Task Crossed Deadline:&nbsp;{{cross}}</h6>
+    </div>
+    {% for notes in user.notes %}
+    
+    <div class="input-data" style="margin: 20px;">
+        
+        <h5>Work Name:&nbsp;&nbsp;{{notes.title}}</h5>
+        <h5>Work Id:&nbsp;&nbsp;{{notes.id}}</h5>
+        <h5>Work Details:&nbsp;&nbsp;{{notes.content}}</h5>
+        {% if notes.status == 'completed' %}
+        
+        <label for="b" class="btn btn-success" style="margin:auto"><h5>&nbsp;Work Status:&nbsp;&nbsp;Completed</h5></label>
+        
+        &nbsp;&nbsp;&nbsp;&nbsp;<h6>Work Completed On:&nbsp;&nbsp;{{notes.timerem}}&nbsp;&nbsp;&nbsp;{{notes.time}}</h6>
+        
+        {%endif%}
+        {% if notes.status == 'request' %}
+        <label for="b" class="btn btn-danger" style="margin:auto"><h5>&nbsp;Work Status:&nbsp;&nbsp;Request</h5></label>
+        <br>
+        {%endif%}
+        {% if notes.status == 'in progress' %}
+        <label for="" class="btn btn-warning" style="margin:auto"><h5>&nbsp;Work Status:&nbsp;&nbsp;In Progress</h5></label>
+        <br>
+        {%endif%}
+        {% if notes.status == 'review' %}
+        <label for="b" class="btn btn-info" style="margin:auto"><h5>&nbsp;Work Status:&nbsp;&nbsp;Review</h5></label>
+        <br>
+        {%endif%}
+        
+        <h5>Work Posted On:&nbsp;&nbsp;{{notes.date}}</h5>
+        
+        <div class="btn btn-danger" style="margin:auto"><h5>Work DeadLine:&nbsp;&nbsp;{{notes.deadline}}</h5></div>
+        <br>
+        <br>
+      </div>
+    {% endfor %} 
+    
+</body>
+</html>
