@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About</title>
+    <link rel="stylesheet"  href="/static/addstyle.css">
+    <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    crossorigin="anonymous"
+  />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <button class=" navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+    <div class="collapse navbar-collapse " id="navbar">
+      <div class="navbar-nav">
+        {%if user.is_authenticated%}
+                <a class="nav-item nav-link" id="home" href="/">Home</a>    
+                <a class="nav-item nav-link" id="home" href="/add">Add Details</a>
+                <a class="nav-item nav-link" id="login" href="/summary">Summary</a>
+                <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+            {%endif%}
+        
+      </div>
+    </div>
+    </nav>
+   <br>
+   <br>
+   <div class="container">
+    <div class="text">This Website Is Developed By</div>
+    <form action="#">
+       <div class="form-row">
+          <div class="input-data">
+             <label for="">Name:&nbsp;&nbsp;RAM PRASATH K</label>
+          </div>
+          <div class="input-data">
+            <label for="">Roll No:&nbsp;&nbsp;21f1002753</label>
+          </div>
+          <div class="input-data">
+            <label for="">Education Details:&nbsp;&nbsp;Completed B.Tech Mechanical , Pursuing Diploma in B.Sc.Data Science and Applications </label>
+         </div>
+         <div class="input-data">
+          <label for="">Contact Email:&nbsp;&nbsp;21f1002753@student.onlinedegree.iitm.ac.in (or) ramkan103@gmail.com</label>
+          
+        </div>
+        
+       </div>
+       
+ </div>
+ 
+
+</body>
+</html>

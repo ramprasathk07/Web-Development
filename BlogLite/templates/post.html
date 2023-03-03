@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        <!-- JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+            crossorigin="anonymous"
+          />
+          <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+            crossorigin="anonymous"
+          />
+          <script src="https://kit.fontawesome.com/b64f17183e.js" crossorigin="anonymous"></script>
+    <title>
+        {% block title %}home{% endblock %}
+    </title>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">BLogLite</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          {%if user.is_authenticated%}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">
+              Dropdown
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/post">Posts</a></li>
+              <li><a class="dropdown-item" href="/profile">Profile</a></li>
+              <li><a class="dropdown-item" href="/">Add</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/logout">Logout</a></li>
+            </ul>
+          </li>
+          
+        </ul>
+        <form method="POST" action="{{url_for('views.search')}}" class="d-flex" role="search">
+          
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search", name="searched">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  {%endif%}
+    {%with messages=get_flashed_messages(with_categories=true)%}
+      {%if messages%}
+        <div class="alert alert-success">
+          {%for category, msg in messages%}
+            {%if category =='error'%}
+              <div class="alert alert-danger alter-dismissable fade show" role="alert">
+                {{msg}}
+                <button type="button" class="close" data-dismiss="alert">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              {%else%}
+              <div class="alert alert-success alter-dismissable fade show" role="alert">
+                {{msg}}
+                <button type="button" class="close" data-dismiss="alert">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            
+            {%endif%}
+          {%endfor%}
+        </div>
+      
+
+      {%endif%}
+    {%endwith%}
+
+    {%if posts|length !=0%}
+    {%for post in posts%}
+       
+          
+          
+            {%if user.username != post.by %}
+            <div class="card my-5" style="width: 28rem;">
+              {%if post.link|length!=0%}
+                <img src="{{post.link}}" class="card-img-top" alt="...">
+              
+              {%endif%}
+              
+              <div class="card-body">
+                <a href="{{url_for('views.pro1',id=post.id)}}">{{post.by}}</a>
+                
+                <p class="card-text">{{post.title }}</p>
+                <p class="card-text">{{post.desc }}</p>
+                <p class="card-text">Posted on : {{post.date}}</p>
+                <br />
+              </div>
+              {{ post.likes|length }}</span> 
+        {% if user.id in post.likes|map(attribute="author")|list %}
+        <i
+          class="fas fa-thumbs-up"
+          id="like-button-{{post.id}}"
+          onclick="like({{post.id}})"
+        ></i>
+        {% else %}
+        <i
+          class="far fa-thumbs-up"
+          id="like-button-{{post.id}}"
+          onclick="like({{post.id}})"
+        ></i>
+        {% endif %}
+              
+                <br />
+                <div class="collapse" id="comments-{{post.id}}">
+                  <div class="card">
+                    <div class="card-body" id="comments-expanded-{{post.id}}">
+                      {% for comment in comment %}
+                      {% if comment.post_id == post.id %}
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          <a href="/pro1/{{comment.user_id}}"
+                            >{{comment.user.username}}</a
+                          >: {{comment.text}}
+                        </div>
+                        <div>
+                          <br>
+                          <small class="text-muted"> {{comment.date}}</small>
+                          {% if user.id == comment.user_id or user.id == post.author %}
+                          <div class="btn-group">
+                            <button
+                              type="button"
+                              class="btn btn-sm btn-primary dropdown-toggle"
+                              data-bs-toggle="dropdown"
+                            ></button>
+                            <ul class="dropdown-menu">
+                              <li>
+                                <a
+                                  href="/delete-comment/{{comment.id}}"
+                                  class="dropdown-item"
+                                  >Delete</a
+                                >
+                                <br>
+                              </li>
+                            </ul>
+                          </div>
+                          {% endif %}
+                        </div>
+                      </div>
+                      {%endif%}
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+                <p class="card-text">
+                  {% if post.comments|length > 0 %}
+                  <a data-bs-toggle="collapse" href="#comments-{{post.id}}" role="button">
+                    <small>View {{post.comments|length}} Comments</small>
+                  </a>
+                  {% else %}
+                  <small class="text-muted">No Comments</small>
+                  {% endif %}
+                </p>
+
+                <br />
+                <form class="input-group mb-3" method="POST" action="/create-com/{{post.id}}">
+                  <input type="text" class="form-control" placeholder="comment"  name="text" id="text">
+                <button class="btn btn-primary" type="submit" >comment</button>
+                </form>
+                {%endif%}
+                {%endfor%}  
+                
+              </div>
+            
+                
+                
+            </div>  
+                          
+            </div>
+            
+          
+
+          {%endif%}
+          
+        </div>
+      </div>
+
+        <div class="col1">
+         <p>Didnt start posting Yet! Wanna Post</p>
+         <a href="add" class="btn btn-primary">Post</a>
+        </div>
+       
+   
+
+    <script
+    src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"
+  ></script>
+  <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='index.js') }}"
+    ></script>
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='like.js') }}"
+    ></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+{% extends "underg.html"%} {% block title %}Login{% endblock %}
+    
+
+    
+
+{% block content %}
+{%with messages=get_flashed_messages(with_categories=true)%}
+      {%if messages%}
+        <div class="alert alert-success">
+          {%for category, msg in messages%}
+            {%if category =='error'%}
+              <div class="alert alert-danger alter-dismissable fade show" role="alert">
+                {{msg}}
+                <button type="button" class="close" data-dismiss="alert">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              {%else%}
+              <div class="alert alert-success alter-dismissable fade show" role="alert">
+                {{msg}}
+                <button type="button" class="close" data-dismiss="alert">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            
+            {%endif%}
+          {%endfor%}
+        </div>
+      </div>
+      
+
+      {%endif%}
+    {%endwith%}
+    <div class="container">
+    <form method="POST">
+        <h3 align="center">Login</h3>
+        <div class="form-group">
+            <label for="Email">Email Address</label>
+            <input type="Email" class="form-control" id="Email" name="Email" placeholder="Enter your Email ID"/>
+            
+        </div>
+       
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password"/>
+        </div>
+        
+        <br>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    </div>
+
+{% endblock %}
+

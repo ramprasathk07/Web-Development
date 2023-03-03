@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card</title>
+    <link rel="stylesheet"  href="/static/addstyle.css">
+    <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    crossorigin="anonymous"
+  />
+  <script>
+    function checkdelete(){
+      return confirm('Are You Sure You Want To Delete This Card?');
+    }
+  </script> 
+      
+</head>
+<body>
+    <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <button class=" navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+    <div class="collapse navbar-collapse " id="navbar">
+      <div class="navbar-nav">
+        {%if user.is_authenticated%}
+            <a class="nav-item nav-link" id="home" href="/add">Add Details</a>
+            <a class="nav-item nav-link" id="home" href="/">Home</a>
+            <a class="nav-item nav-link" id="login" href="/summary">Summary</a>
+            <a class="nav-item nav-link" id="signUp" href="/about">About</a>
+                <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+            {%endif%}
+        
+      </div>
+    </div>
+    </nav>
+</header>
+<br>
+    {% for notes in user.notes %}
+    {% if notes.id == id %}
+    <div class="container">
+        <div class="text">Card Details</div>
+        <form action="#">
+           <div class="form-row">
+              <div class="input-data">
+                <label for="">User Name:&nbsp;{{notes.user_name}}</label>
+              </div>
+              <div class="input-data">
+                <label for="">Work Id :&nbsp;{{notes.id}}</label>
+              </div>
+              <div class="input-data">
+                <label for="">Work :&nbsp;{{notes.title}}</label>
+              </div>
+              <div class="input-data">
+                <label for="">Detailed Work Info :&nbsp;{{notes.content}}</label>
+              </div>
+              <div class="input-data">
+                {% if notes.status == 'completed' %}
+                <label for="" class="btn btn-success" style="margin:auto">Work Status :&nbsp;Completed</label>
+                {%endif%}
+                {% if notes.status == 'request' %}
+                <label for="" class="btn btn-danger" style="margin:auto">Work Status :&nbsp;Request</label>
+                {%endif%}
+                {% if notes.status == 'in progress' %}
+                <label for="" class="btn btn-warning" style="margin:auto">Work Status :&nbsp;In Progress</label>
+                {%endif%}
+                {% if notes.status == 'review' %}
+                <label for="" class="btn btn-info" style="margin:auto">Work Status :&nbsp; Review</label>
+                {%endif%}
+              </div>
+              <div class="input-data">
+                <label for="">Work Posted on :&nbsp;{{notes.date}}</label>
+              </div>
+              <div class="input-data">
+                <label for="b" >Work Deadline :&nbsp;{{notes.deadline}}</label>
+              </div>
+              {%if notes.com%}
+              <div class="input-data">
+                <label for="b" >Work Comment :&nbsp;{{notes.com}}</label>
+              </div>
+              {%endif%}
+              
+                <br>
+                <br>
+                <div style="justify-content: center; display: flex;">
+              &nbsp;&nbsp;&nbsp;&nbsp;<div id="del" class ="btn btn-danger"><a href="{{url_for('views.delete',id=notes.id)}}" onclick="return checkdelete()">Delete</a></div>&nbsp;&nbsp;&nbsp;
+              
+              {%if notes.status != 'completed'%}
+              &nbsp;&nbsp;&nbsp;&nbsp;<div  class ="btn btn-success" ><a href="{{url_for('views.forw',id=notes.id)}}">Send Forward</a></div>
+              {%endif%}
+              {%if notes.status != 'request'%}
+              &nbsp;&nbsp;&nbsp;&nbsp;<div  class ="btn btn-danger" ><a href="{{url_for('views.back',id=notes.id)}}">Return back</a></div>
+              {%endif%}
+              <br>
+              {%if notes.status=="completed"%}
+              &nbsp;&nbsp;&nbsp;&nbsp;<h6>Work Completed On:&nbsp;&nbsp;{{notes.timerem}}&nbsp;&nbsp;&nbsp;{{notes.time}}</h6>
+              <br>
+              {%endif%}
+              
+            </div>
+              
+              
+           
+           
+        </form>
+     </div>
+     {%if notes.status != 'request' %}
+     <div class="form">
+     <form method="POST">
+       <div class="form-group">
+           <label for="name">Comment</label>
+           <input  class="form-control" id="comment" name="comment" placeholder="Add A Comment "/>
+           
+           <button type="submit" class="btn btn-primary">Submit</button>
+           <br>
+           <br>
+           
+           <label for="name">Work Title</label>
+           <input  class="form-control" id="ip" name="ip" placeholder="Fill If You Want To Update Title "/>
+           
+           <button type="submit" class="btn btn-primary">Update</button>
+          
+         </div>
+         </form>
+     
+     </div>
+     
+     {%endif%}
+     {%endif%}
+     {% endfor %} 
+     
+</body>
+</html>
