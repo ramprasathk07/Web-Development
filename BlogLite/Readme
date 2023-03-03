@@ -1,0 +1,9 @@
+THis blog app includes the following basic functionalities:
+
+User registration and authentication: Users can create an account, log in, and manage their profile.
+Blog creation: Users can create new blog posts, including a title, content, and images or videos.
+Blog editing: Users can modify existing blog posts by editing the title, content, or other details.
+Blog deletion: Users can delete blog posts that are no longer needed or relevant.
+Commenting: Users can leave comments on blog posts and engage in discussions with other users.
+Blog search: Users can search for blog posts based on keywords, categories, or other criteria.
+Content management: The app can include a content management system to manage the blog's layout, categories, tags, and other settings.
