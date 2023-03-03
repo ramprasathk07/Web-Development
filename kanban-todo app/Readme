@@ -1,4 +1,4 @@
-A todo app typically includes the following basic functionalities:
+This Kanban-todo app includes the following basic functionalities:
 
 Task creation: Users can create new tasks and assign them a title, description, and due date.
 Task organization: Users can categorize tasks into different lists or tags to help with organization and prioritization.
