@@ -1,0 +1,18 @@
+This Repositories conatains all my webdevelopment projects done so far using flask,sqlalchemy,and html.
+
+
+Flask is a web development framework for Python that allows developers to create web applications quickly and easily.
+Flask is a lightweight framework that provides a simple and flexible approach to web development, 
+making it a popular choice for creating small to medium-sized web applications.
+
+Some of the key features of Flask include its built-in development server, which makes it easy to test and debug applications
+its support for extensions and plugins, which allows developers to add functionality to their applications easily
+and its integration with other Python libraries and frameworks.
+
+Flask also provides a range of tools and utilities for web development, including support for URL routing, 
+request and response handling, and template rendering. It also has support for various database systems, such as SQLite and MySQL, 
+making it easy to build database-backed web applications.
+
+Overall, Flask is a powerful and flexible framework for web development using Python,
+and its simplicity and ease of use make it an excellent choice for building web applications quickly and efficiently.
+
